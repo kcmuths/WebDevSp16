@@ -33,8 +33,8 @@ var express = require('express');
  //require("./public/Experiments/Threads/models/posts.js");
  //require("./public/Experiments/Threads/models/comments.js");
  require("./public/assignment/server/app.js")(app, mongoose, db );
- //require("./public/Project/Threads/model/posts.js");
- //require("./public/Project/Threads/model/posts.js");
+ require("./public/Project/Threads/models/posts.js");
+ require("./public/Project/Threads/models/comments.js");
 
  //var routes = require('./public/Experiments/Threads/routes/index.js');
  //var users = require('./public/Experiments/Threads/routes/users');
