@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="home page">
+    <meta name="author" content="Muthanna">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Threads of News</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--JQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <!-- AngularJS CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.js"></script>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/user.service.js"></script>
+    <script src="../css/news.css"></script>
+    <script src="../css/style.css"></script>
+
+
+
+    <script src="../views/login/login.controller.js"></script>
+
+    <style> .glyphicon-thumbs-up {cursor:pointer} </style>
+
+</head>
+<body ng-app="Threads" background ="../img/Retro.jpg">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">NEWS Browser</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/home.html">Home</a></li>
+                <li><a href="../views/login/login.html">login</a></li>
+                <li><a href="#/register">Create Account</a></li>
+                <li><a href="#/posts.html">Post</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <ui-view></ui-view>
+    </div>
+        <div style="top: 25%;
+    left:75%;
+    position: absolute;
+    z-index:1;
+    visibility: visible;">
+            <a class="twitter-timeline" href="https://twitter.com/search?q=%23trendingnews%20" data-widget-id="714868002437640193">Tweets about #trendingnews </a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+        </div>
+
+<!--
+            <a href="http://www.accuweather.com/en/us/new-york-ny/10007/weather-forecast/349727" class="aw-widget-legal">
+                            </a><div id="awcc1461027690038" class="aw-widget-current"  data-locationkey="" data-unit="f" data-language="en-us" data-useip="true" data-uid="awcc1461027690038"></div><script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script
+-->
+
+    </div>
+</div>
+
+
+<!-- Home Inline template -->
+
+
+<script type="text/ng-template" id="/home.html">
+
+
+
+
+
+    <div class=" container-fluid page-header">
+
+        <h1 style="color: darkred; font-size: 80px; text-align: center ">Threader News</h1>
+        <p style="color: whitesmoke; font-size: 20px">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+    </div>
+
+    <div ng-repeat="post in posts | orderBy: '-upvotes'">
+    <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
+    {{post.upvotes}}
+    <!--downvotes functionality can be added-->
+
+    <span style="font-size:20px; margin-left:10px;">
+    <a ng-show = "post.link" href="{{post.link}}">
+    {{post.title}}
+        </a>
+    <span ng-hide="post.link">
+        {{post.title}}
+        </span>
+        </span>
+    <span>
+        <a href="#/posts/{{$index}}">Comments</a>
+    </span>
+
+</div>
+<form ng-submit="addPost()" style="margin-top:30px;">
+    <h3 style="color: forestgreen; text-align: center; font-size: 40px">Create new NEWS posting!</h3>
+    <div class="form-group">
+    <input type="text" class="form-control" placeholder="Title" ng-model="title">
+    </div>
+    <div class="form-group">
+    <input type="text" class="form-control" placeholder="Link" ng-model="link">
+    </div>
+<button type="submit" class="btn btn-primary">Post</button>
+</form>
+    <div class="page-header">
+        <h3 style="color:snow; text-align: center; font-size: 30px; font-family: 'Comic Sans MS'"> Search Reddit for All
+            <img src="../img/reddit-logo.png" alt="reddit image" style="width:200px;height:150px;">
+        </h3>
+    </div>
+    <p style="color:snow; font-size: 15px; text-align: center">Please enter any domain name excluding www. to search and hit Enter! </p>
+    <div style="margin: 0 auto" id="searchfield">
+        <form id="domainform" name="domainform">
+            <input style=""type="text" class="search" id="s" name="s" placeholder="ex: cnn.com">
+        </form>
+    </div>
+    <div id="content">
+
+    </div>
+
+
+</script>
+
+
+
+<!-- Posts Inline template -->
+<script type="text/ng-template" id="/posts.html">
+<div class="page-header">
+    <h3>
+        <a ng-show="post.link" href="{{post.link}}">
+            {{post.title}}
+        </a>
+        <span ng-hide="post.link">
+            {{post.title}}
+        </span>
+    </h3>
+</div>
+    <div ng-repeat="comment in post.comments | orderBy: '-upvotes'">
+        <span class ="glyphicon glyphicon-thumbs-up"
+              ng-click="incrementUpvotes(comment)"></span>
+        {{comment.upvotes}} - by {{comment.author}}
+        <span style="font-size:20px; margin-left:10px;">
+            {{comment.body}}
+        </span>
+    </div>
+    <form ng-submit="addComment()"
+          style="margin-top:30px">
+        <h3>Add a new Comment</h3>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Comment" ng-model="body">
+        </div>
+        <button type="submit" class="btn btn-primary">Comment</button>
+    </form>
+</script>
+
+<!--<script type="text/ng-template" id="/posts.html">
+    <div class="page-header">
+<script type="text/ng-template" id="/search.html">
+<div class="page-header">
+    <h3>Reddit news search</h3>
+
+</div>
+<p>Enter a domain without <code> http://www.</code> to browse recent sub reddits</p>
+    <div id="searchfield">
+        <form id="domainform" name="domainform">
+            <input type="text" class="search" id="s" name="s" placeholder="ex: bbc.com">
+        </form>
+    </div>
+    <div id="content">
+
+    </div>
+</script>
+-->
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</html>

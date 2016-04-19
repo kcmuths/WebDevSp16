@@ -1,0 +1,9 @@
+.tweet {
+    top: 25%;
+    left:75%;
+    position: absolute;
+    z-index:1;
+    visibility: visible;
+}
+
+

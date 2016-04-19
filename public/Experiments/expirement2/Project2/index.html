@@ -1,0 +1,158 @@
+<!--<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<!--    <meta name="description" content="admin page">
+    <meta name="author" content="Muthanna">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Eventing</title>
+
+    <!-- Bootstrap core CSS
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--JQuery CDN
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <!-- AngularJS CDN -->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-route.js"></script>
+-->
+
+    <!--SERVICES
+    <script src="app.js"></script>
+    <script src="config.js"></script>
+    <script src="services/authentication.service.js"></script>
+    <script src="services/flash.service.js"></script>
+    <script src="services/user.service.js"></script>
+    <script src="services/user.service.local-storage.js"></script>
+
+
+    <!--Controllers
+    <script src="views/header/header.controller.js"></script>
+    <script src="views/sidebar/sidebar.controller.js"></script>
+    <script src="views/login/login.controller.js"></script>
+    <script src="views/register/register.controller.js"></script>
+    <script src="views/admin/admin.controller.js"></script>
+    <script src="views/main/main.controller.js"></script>
+
+
+
+
+
+    <!-- Custom styles for this template
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/event1.css" rel="stylesheet">
+    <link href="css/news.css" rel="stylesheet">
+
+
+
+</head>
+<body ng-controller="MainController">
+
+<div class="container" ng-include="'views/header/header.view.html'"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="container" ng-include="'views/sidebar/sidebar.view.html'"></div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ng-view></div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+</html>
+-->
+
+
+
+
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <title>Event Site</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link href="css/app.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="jumbotron">
+        <div class="container">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+                <div ng-view></div>
+            </div>
+        </div>
+    </div>
+
+<!-- <div class=" col-md-6 col-md-offset-3">
+
+   <div class="banner-search col-md-offset-2 col-md-8 col-md-offset-2">
+       <div align="center">
+       <h3>Search Event!</h3> </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="DOB">Date of Event</label>
+                <div class="input-group">
+                    <input type="date" class="form-control" name="DOB">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Boston, MA">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Event Name">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-btn">
+                <button type="submit" href="views/search/search.view.html">Search</button>
+            </div>
+        </div>
+    </div>
+-->
+
+
+    <!--<div class="credits text-center">
+        <p>
+            <a href="http://jasonwatmore.com/post/2015/03/10/AngularJS-User-Registration-and-Login-Example.aspx">AngularJS User Registration and Login Example</a>
+        </p>
+        <p>
+            <a href="http://jasonwatmore.com">JasonWatmore.com</a>
+        </p>
+    </div>
+
+    <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="//code.angularjs.org/1.2.20/angular.js"></script>
+    <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
+    <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
+
+    <script src="app.js"></script>
+    <script src="services/authentication.service.js"></script>
+    <script src="services/flash.service.js"></script>
+
+    <!-- Real user service that uses an api -->
+    <!-- <script src="services/user.service.js"></script> -->
+
+    <!-- Fake user service for demo that uses local storage -->
+    <script src="services/user.service.local-storage.js"></script>
+
+    <script src="views/home/home.controller.js"></script>
+    <script src="views/login/login.controller.js"></script>
+    <script src="views/register/register.controller.js"></script>
+</body>
+</html>
+
