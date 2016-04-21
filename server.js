@@ -26,9 +26,9 @@ require('./public/Project/Threads/models/Comments');
 require('./public/Project/Threads/models/Users');
 require('./public/Project/config/passport');
 
-mongoose.connect('mongodb://localhost/news');
+//mongoose.connect('mongodb://localhost/news');
 
- /*var connectionString = 'mongodb://127.0.0.1:27017/webdevelopmentsp16';
+ var connectionString = 'mongodb://127.0.0.1:27017/webdevelopmentsp16';
 
  if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
  connectionString = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
@@ -55,6 +55,5 @@ mongoose.connect('mongodb://localhost/news');
 
  app.listen(port, ipaddress);
 
-*/
 
-app.listen(3000);
+//app.listen(3000);
