@@ -30,7 +30,7 @@ app.controller('MainCtrl',['$scope','posts',function($scope, posts){
         $scope.link = '';
     };
     $scope.incrementUpvotes = function(post) {
-        post.upvotes += 1;
+        post.upvote(post);
     };
 }]);
 

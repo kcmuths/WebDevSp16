@@ -1,38 +1,4 @@
 var app = angular.module('Threads', ['ui.router']);
-app.factory('posts',[function(){
-    var o = {
-        posts:[]
-    };
-    return o;
-}]);
-app.controller('MainCtrl',['$scope','posts',function($scope, posts){
-    $scope.test= 'Hello World'
-    $scope.posts = posts.posts;
-        /*[
-        {title: 'post 1', upvotes: 5},
-        {title: 'post 2', upvotes: 2},
-        {title: 'post 3', upvotes: 15},
-        {title: 'post 4', upvotes: 9},
-        {title: 'post 5', upvotes: 4}
-    ]; */
-    /* add POST controller */
-    $scope.addPost = function(){
-        if(!$scope.title || $scope.title === '')
-        {
-            return;
-        }
-        $scope.posts.push({title: $scope.title, link:$scope.link, upvotes: 0,
-        comments: [
-            {author:'Grace', body:'Slick', upvotes: 0},
-            {author:'Alice', body:'so and so', upvotes: 0}
-        ]});
-        $scope.title = '';
-        $scope.link = '';
-    };
-    $scope.incrementUpvotes = function(post) {
-        post.upvotes += 1;
-    };
-}]);
 
 app.config([
     '$stateProvider',
@@ -42,46 +8,258 @@ app.config([
                 url: '/home',
                 templateUrl: '/home.html',
                 controller: 'MainCtrl'
+/*                resolve:{                                           //Query all posts from our Backend
+                    postPromise:['posts', function(posts){
+                        return posts.getAll();
+                    }]
+                } */
             })
             .state('posts', {
-            url: '/posts/{id}',
+            url: '/posts/:id',
             templateUrl:'/posts.html',
             controller: 'PostsCtrl'
+               /*resolve: {
+                    post: ['$stateParams', 'posts', function($stateParams, posts){
+                        return posts.get($stateParams.id);
+                    }]
+                } */
         })
             .state('search', {
             url: '/search',
             templateUrl: '/search.html',
             controller: 'SearchCtrl'
         })
-            .state('header',{
-                url: '/header',
-                templateUrl: '/header.html',
-                controller: 'HeaderCtrl'
+            .state('login', {
+                url: '/login',
+                templateUrl: '/login.html',
+                controller: 'AuthCtrl',
+                onEnter: ['$state', 'auth', function($state, auth){
+                    if(auth.isLoggedIn()){
+                        $state.go('home');
+                    }
+                }]
             })
-            .state('login',{
-                url:'/login',
-                templateUrl:'login.html',
-                controller:'LoginCtrl'
+            .state('register', {
+                url: '/register',
+                templateUrl: '/register.html',
+                controller: 'AuthCtrl',
+                onEnter: ['$state', 'auth', function($state, auth){
+                    if(auth.isLoggedIn()){
+                        $state.go('home');
+                    }
+                }]
             });
+
+
         $urlRouterProvider.otherwise('home');
     }
 ]);
+
+app.factory('auth', ['$http', '$window',
+    function($http, $window){
+        var auth = {};
+
+
+        auth.saveToken = function(token){
+            $window.localStorage['Threader-news-token']= token;
+        };
+        auth.getToken = function(){
+            return $window.localStorage['Threader-news-token'];
+
+        }
+        auth.isLoggedIn = function(){
+            var token = auth.getToken();
+            if(token){
+                var payload = JSON.parse($window.atob(token.split('.')[1]));
+                return payload.exp > Date.now()/1000;
+            }
+            else
+            {
+                return false;
+            }
+        };
+        auth.currentUser = function(){
+            if(auth.isLoggedIn()){
+                var token = auth.getToken();
+                var payload =JSON.parse($window.atob(token.split('.')[1]));
+                return payload.username;
+            }
+        };
+
+        return auth;
+    }]);
+
+
+app.factory('/api/Project/Threads/posts',['$http','auth',
+    function($http, auth){
+    var o = {
+        posts:[]
+    };
+
+    /* Retrieve All posts */
+
+    o.getAll = function(){
+        return $http.get('/api/Project/Threads/posts').success(function(data){
+            angular.copy(data, o.posts);
+        });
+    };
+
+    /* Creating New Posts */
+    o.create = function(post){
+        return $http.post('/api/Project/Threads/posts', post, {
+        headers: {Authorization: 'Bearer ' +auth.getToken()}
+        })
+        .success(function(data){
+            o.posts.push(data);
+        });
+    };
+
+    /* Main Page upvotes */
+    o.upvote = function(post){
+        return $http.put('/api/Project/Threads/posts/' + post._id + '/upvote', null,{
+            headers: {Authorization: 'Bearer '+auth.getToken()}
+        })
+            .success(function(data){
+                post.upvotes +=1;
+            });
+    };
+
+    /*Retrieve Single post from server */
+    o.get = function(id){
+        return $http.get('/api/Project/Threads/posts/' + id).then(function(res){
+            return res.data;
+        });
+    };
+
+    /* Enable adding comments */
+    o.addComment = function(id, comment){
+        return $http.post('/api/Project/Threads/posts' + id + '/comments', comment, {
+            headers: {Authorization: 'Bearer ' +auth.getToken()}
+        });
+    };
+
+    o.upvoteComment = function(post, comment){
+        return $http.put('/api/Project/Threads/posts/' + post._id + '/comments/' + comment._id + '/upvote', null,{
+            headers: {Authorization: 'Bearer '+auth.getToken()}
+        })
+            .success(function(data){
+                comment.upvotes +=1;
+            });
+    };
+    return o;
+
+}]);
+
+
+app.controller('MainCtrl',['$scope','posts','auth',
+    function($scope, posts, auth){
+    //$scope.test= 'Hello World'
+        $scope.posts = posts.posts;
+        $scope.isLoggedIn = auth.isLoggedIn;
+
+        $scope.title = '';
+    /*[
+     {title: 'post 1', upvotes: 5},
+     {title: 'post 2', upvotes: 2},
+     {title: 'post 3', upvotes: 15},
+     {title: 'post 4', upvotes: 9},
+     {title: 'post 5', upvotes: 4}
+     ]; */
+    /* add POST controller */
+        $scope.addPost = function(){
+        if($scope.title === '')
+        {
+            return;
+        }
+        posts.create({
+            title:$scope.title,
+            link:$scope.link,
+        });
+        // $scope.posts.push({title: $scope.title, link:$scope.link, upvotes: 0,
+        // comments: [
+        //   {author:'Grace', body:'Slick', upvotes: 0},
+        // {author:'Alice', body:'so and so', upvotes: 0}
+        //]});
+        $scope.title = '';
+        $scope.link = '';
+    };
+    $scope.incrementUpvotes = function(post) {
+        post.upvote(post);
+    };
+}]);
+
+
 /* POST controller */
-app.controller('PostsCtrl', ['$scope', '$stateParams', 'posts', function($scope, $stateParams, posts){
-        $scope.post = posts.posts[$stateParams.id];
-    $scope.addComment = function(){
+app.controller('PostsCtrl', ['$scope', 'posts','post','auth',
+    function($scope, posts, post, auth){
+
+        $scope.post = post;
+        $scope.isLoggedIn = auth.isLoggedIn;
+
+        $scope.addComment = function(){
         if($scope.body === ''){
             return;
         }
-        $scope.post.comments.push({
+        posts.addComment(post._id, {
+            body: $scope.body,
+            author: 'user'
+        })
+            .success(function(comment){
+            $scope.post.comments.push(comment);
+        });
+        $scope.body = '';
+
+
+
+
+
+        /*$scope.post.comments.push({
             body: $scope.body,
             author: 'user',
             upvotes: 0
         });
-        $scope.body = '';
+        $scope.body = '';  */
+    };
+    $scope.incrementUpvotes = function(comment){
+        posts.upvoteComment(post, comment);
     };
 
     }]);
+
+
+/* Controller for LOGIN and Register Page */
+
+app.controller('AuthCtrl', ['$scope', '$state', 'auth',
+    function($scope, $state, auth){
+        $scope.user = {};
+
+        $scope.register = function(){
+            auth.register($scope.user).error(function(error){
+                $scope.error = error;
+            }).then(function(){
+                $state.go('home');
+            });
+        };
+
+        $scope.logIn = function(){
+            auth.logIn($scope.user).error(function(error){
+                $scope.error = error;
+            }).then(function(){
+                $state.go('home');
+            });
+        };
+    }]);
+
+/* NAVIGATION/HEADER Controller */
+
+app.controller('NavCtrl', ['$scope', 'auth',
+    function($scope, auth){
+        $scope.isLoggedIn = auth.isLoggedIn;
+        $scope.currentUser = auth.currentUser;
+        $scope.logOut = auth.logOut;
+    }]);
+
+
 
 /* SEARCH REDDIT API */
 
@@ -137,33 +315,35 @@ $(function(){
 
     //timeago references timeSince. Used to display imestamp in the format xx minutes ago.
 
-    function timeSince(date){
-        var seconds = Math.floor(((new Date().getTime()/1000) - date))
+    function timeSince(date) {
+        var seconds = Math.floor(((new Date().getTime() / 1000) - date))
         var interval = Math.floor(seconds / 31536000);
 
-        if(interval >= 1){
-            if(interval == 1)
-            return interval + " year ago";
+        if (interval >= 1) {
+            if (interval == 1)
+                return interval + " year ago";
             else
-            return interval + "years ago";
+                return interval + "years ago";
         }
         interval = Math.floor(seconds / 2592000);
-        if(interval >= 1 ){
-            if(interval == 1)
-            return interval + "month ago";
+        if (interval >= 1) {
+            if (interval == 1)
+                return interval + "month ago";
             else
-            return interval + "months ago";
+                return interval + "months ago";
         }
-        interval = Math.floor(seconds/86400);
-        if(interval >= 1)
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1)
             return interval + "day ago";
-            else
+
+        else
             return interval + "days ago";
         interval = Math.floor(seconds/3600);
         if(interval >= 1)
-        return interval + "hour ago";
+            return interval + "hour ago";
         else
-        return interval + "hours ago";
+            return interval + "hours ago";
+
 
         interval = Math.floor(seconds/60);
         if(interval >= 1)

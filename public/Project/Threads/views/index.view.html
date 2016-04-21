@@ -21,6 +21,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-route.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/2.0.0-beta.15/Rx.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.js"></script>
 
@@ -38,7 +40,7 @@
 </head>
 <body ng-app="Threads" background ="../img/Retro.jpg">
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="NavCtrl">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -52,9 +54,10 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#/home.html">Home</a></li>
-                <li><a href="../views/login/login.html">login</a></li>
-                <li><a href="#/register">Create Account</a></li>
-                <li><a href="#/posts.html">Post</a></li>
+                <li ng-show ="isLoggedIn()"><a>{{currentUser() }}</a></li>
+                <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
+                <li ng-hide="isLoggedIn()"><a href="../views/index.view.html?#/login">Log In</a></li>
+                <li ng-hide="isLoggedIn()"><a href="../views/index.view.html?#/register">Register</a></li>
             </ul>
         </div>
     </div>
@@ -66,6 +69,7 @@
     <div class="col-md-6 col-md-offset-3">
         <ui-view></ui-view>
     </div>
+        <!--<div class="container-fluid">
         <div style="top: 25%;
     left:75%;
     position: absolute;
@@ -75,6 +79,7 @@
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
         </div>
+        </div>  -->
 
 <!--
             <a href="http://www.accuweather.com/en/us/new-york-ny/10007/weather-forecast/349727" class="aw-widget-legal">
@@ -90,14 +95,10 @@
 
 <script type="text/ng-template" id="/home.html">
 
-
-
-
-
     <div class=" container-fluid page-header">
 
         <h1 style="color: darkred; font-size: 80px; text-align: center ">Threader News</h1>
-        <p style="color: whitesmoke; font-size: 20px">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+        <p style="color: whitesmoke; font-size: 20px">"Looking for a place to use add posts with Links? look no further, Threader news allows you to do so. You can also login and comment to Posts posted by someone else. The Reddit search api at the bottom of the page can be used to search through news or anything on reddit.com "</p>
     </div>
 
     <div ng-repeat="post in posts | orderBy: '-upvotes'">
@@ -112,13 +113,17 @@
     <span ng-hide="post.link">
         {{post.title}}
         </span>
+
         </span>
     <span>
-        <a href="#/posts/{{$index}}">Comments</a>
+        <a href="#/posts/{{post._id}}">Comments</a>
     </span>
+        <span ng-show="post.author">
+            posted by <a>{{post.author}}</a> |
+        </span>
 
 </div>
-<form ng-submit="addPost()" style="margin-top:30px;">
+<form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top:30px;">
     <h3 style="color: forestgreen; text-align: center; font-size: 40px">Create new NEWS posting!</h3>
     <div class="form-group">
     <input type="text" class="form-control" placeholder="Title" ng-model="title">
@@ -136,7 +141,7 @@
     <p style="color:snow; font-size: 15px; text-align: center">Please enter any domain name excluding www. to search and hit Enter! </p>
     <div style="margin: 0 auto" id="searchfield">
         <form id="domainform" name="domainform">
-            <input style=""type="text" class="search" id="s" name="s" placeholder="ex: cnn.com">
+            <input type="text" class="search" id="s" name="s" placeholder="ex: cnn.com">
         </form>
     </div>
     <div id="content">
@@ -177,6 +182,70 @@
         <button type="submit" class="btn btn-primary">Comment</button>
     </form>
 </script>
+
+<!-- REGISTER Template  -->
+
+<script type="text/ng-template" id="/register.html">
+    <div class="container-fluid page-header">
+        <h1>Threader News</h1>
+    </div>
+
+    <div ng-show="error" class="alert alert-danger row">
+        <span>{{ error.message }}</span>
+    </div>
+
+    <form ng-submit="register()"
+          style="margin-top:30px;">
+        <h3>Register</h3>
+
+        <div class="form-group">
+            <input type="text"
+                   class="form-control"
+                   placeholder="Username"
+                   ng-model="user.username">
+        </div>
+        <div class="form-group">
+            <input type="password"
+                   class="form-control"
+                   placeholder="Password"
+                   ng-model="user.password">
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</script>
+
+<!-- LOGIN TEMPLATE -->
+
+<script type="text/ng-template" id="/login.html">
+    <div class="container-fluid page-header">
+        <h1>Threader News</h1>
+    </div>
+
+    <div ng-show="error" class="alert alert-danger row">
+        <span>{{ error.message }}</span>
+    </div>
+
+    <form ng-submit="logIn()"
+          style="margin-top:30px;">
+        <h3>Log In</h3>
+
+        <div class="form-group">
+            <input type="text"
+                   class="form-control"
+                   placeholder="Username"
+                   ng-model="user.username">
+        </div>
+        <div class="form-group">
+            <input type="password"
+                   class="form-control"
+                   placeholder="Password"
+                   ng-model="user.password">
+        </div>
+        <button type="submit" class="btn btn-primary">Log In</button>
+    </form>
+</script>
+
+
 
 <!--<script type="text/ng-template" id="/posts.html">
     <div class="page-header">

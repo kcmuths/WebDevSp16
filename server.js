@@ -14,12 +14,21 @@ var express = require('express');
  var app = express();
  var bodyParser = require('body-parser');
  var mongoose = require('mongoose');
+var passport = require('passport');
 
  app.use(express.static(__dirname + '/public'));
  app.use(bodyParser.json());
  app.use(bodyParser.urlencoded({extended: true}));
+app.use(passport.initialize());
 
- var connectionString = 'mongodb://127.0.0.1:27017/webdevelopmentsp16';
+require('./public/Project/Threads/models/Posts');
+require('./public/Project/Threads/models/Comments');
+require('./public/Project/Threads/models/Users');
+require('./public/Project/config/passport');
+
+mongoose.connect('mongodb://localhost/news');
+
+ /*var connectionString = 'mongodb://127.0.0.1:27017/webdevelopmentsp16';
 
  if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
  connectionString = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
@@ -30,11 +39,12 @@ var express = require('express');
  }
 
  var db = mongoose.connect(connectionString);
- //require("./public/Experiments/Threads/models/posts.js");
- //require("./public/Experiments/Threads/models/comments.js");
+ //require("./public/Experiments/Threads/models/Posts.js");
+ //require("./public/Experiments/Threads/models/Comments.js");
  require("./public/assignment/server/app.js")(app, mongoose, db );
- require("./public/Project/Threads/models/posts.js");
- require("./public/Project/Threads/models/comments.js");
+ require("./public/Project/Threads/models/Posts.js");
+ require("./public/Project/Threads/models/Comments.js");
+
 
  //var routes = require('./public/Experiments/Threads/routes/index.js');
  //var users = require('./public/Experiments/Threads/routes/users');
@@ -45,3 +55,6 @@ var express = require('express');
 
  app.listen(port, ipaddress);
 
+*/
+
+app.listen(3000);

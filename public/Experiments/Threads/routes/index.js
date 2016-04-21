@@ -6,7 +6,7 @@ var Post = mongoose.model('Post');
 var Comment = mongoose.model('Comment');
 
 /* url route for posts */
-router.get('/posts', function(req, res, next){
+router.get('posts', function(req, res, next){
     Post.find(function(err, posts){
         if(err) {
             return next(err);

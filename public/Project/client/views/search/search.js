@@ -1,3 +1,4 @@
+
 $(function(){
     $('#domainform').on('submit', function(event){
         event.preventDefault();
