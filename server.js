@@ -1,4 +1,4 @@
-/*var express = require('express');
+var express = require('express');
 var app = express();
 app.use(express.static(__dirname + '/public'));
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
@@ -7,10 +7,10 @@ app.get('/hello', function(req, res){
     res.send('hello world');
 });
 app.listen(port, ipaddress);
-*/
 
 
-var express = require('express');
+
+/*var express = require('express');
  var app = express();
  var bodyParser = require('body-parser');
  var mongoose = require('mongoose');
@@ -57,3 +57,4 @@ require('./public/Project/config/passport');
 
 
 //app.listen(3000);
+*/
