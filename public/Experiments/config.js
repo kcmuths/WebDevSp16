@@ -19,7 +19,7 @@
                 templateUrl:"./views/admin/admin.view.html"
             })
             .otherwise({
-                redirectTo:"/home"
+                redirectTo:"./views/home"
             });
 
 

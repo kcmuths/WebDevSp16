@@ -1,8 +1,8 @@
 "use strict";
 (function() {
     angular
-        .module("Threads")
-        .controller("LoginCtrl", LoginController);
+        .module("ThreaderApp")
+        .controller("LoginController", LoginController);
 
     function LoginController($rootScope, $scope, $location, UserService) {
         $scope.$location = $location;
