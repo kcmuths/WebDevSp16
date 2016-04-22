@@ -21,10 +21,10 @@ var passport = require('passport');
  app.use(bodyParser.urlencoded({extended: true}));
 app.use(passport.initialize());
 
-require('./public/Project/Threads/models/Posts');
-require('./public/Project/Threads/models/Comments');
-require('./public/Project/Threads/models/Users');
-require('./public/Project/config/passport');
+//require('./public/Project/Threads/models/Posts');
+//require('./public/Project/Threads/models/Comments');
+//require('./public/Project/Threads/models/Users');
+//require('./public/Project/config/passport');
 
 //mongoose.connect('mongodb://localhost/news');
 
@@ -42,8 +42,8 @@ require('./public/Project/config/passport');
  //require("./public/Experiments/Threads/models/Posts.js");
  //require("./public/Experiments/Threads/models/Comments.js");
  require("./public/assignment/server/app.js")(app, mongoose, db );
- require("./public/Project/Threads/models/Posts");
- require("./public/Project/Threads/models/Comments");
+ require("./public/Project/Threads/models/Posts.js");
+ require("./public/Project/Threads/models/Comments.js");
 
 
  //var routes = require('./public/Experiments/Threads/routes/index.js');
