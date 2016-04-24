@@ -75,31 +75,24 @@ app.config([
                     }]
                 } */
         })
-            .state('search', {
-            url: '/search',
-            templateUrl: '/search.html',
-            controller: 'SearchCtrl'
-        });
-          /*  .state('login', {
+            .state('profile', {
+            url: '/profile',
+            templateUrl: '/profile.html',
+            controller: 'ProfileCtrl'
+        })
+            .state('login', {
                 url: '/login',
-                templateUrl: '/login.view.html',
-                controller: 'AuthCtrl',
-                onEnter: ['$state', 'auth', function($state, auth){
-                    if(auth.isLoggedIn()){
-                        $state.go('home');
-                    }
-                }]
+                templateUrl: '/login.html',
+                controller: 'LoginCtrl'
+
             })
+
             .state('register', {
                 url: '/register',
-                templateUrl: '/register.html',
-                controller: 'AuthCtrl',
-                onEnter: ['$state', 'auth', function($state, auth){
-                    if(auth.isLoggedIn()){
-                        $state.go('home');
-                    }
-                }]
-            }); */
+               templateUrl: '/register.html',
+           //     controller: 'AuthCtrl',
+
+            });
 
 
         $urlRouterProvider.otherwise('home');
@@ -277,7 +270,108 @@ app.controller('NavCtrl', ['$scope', 'auth',
         $scope.logOut = auth.logOut;
     }]);
 
-/
+*/
+
+/* LOGIN CONTROLLER */
+
+(function(){
+    angular
+        .module("Threads")
+        .controller("LoginCtrl", LoginCtrl);
+    function LoginCtrl($rootScope, $scope, $location, UserService) {
+        $scope.$location = $location;
+        $scope.login = login;
+
+        function login(user){
+            var user = UserService.findUserByCredentials(user, function (user){
+                if(user){
+                    $rootScope.currentUser = user;
+                    UserService.setCurrentUser(user);
+                    $location.url('/profile');
+                }
+            });
+        }
+    }
+})();
+
+
+/*Profile Controller */
+
+(function(){
+    angular
+        .module("Threads")
+        .controller("ProfileCtrl", ProfileCtrl);
+    function ProfileCtrl($rootScope, $scope, $location, UserService){
+        $scope.error = null;
+        $scope.message = null;
+        $scope.currentUser = UserService.getCurrentUser();
+        if(!$scope.currentUser){
+            $location.url("/home");
+        }
+        $scope.updateUser = updateUser;
+
+        function updateUser(user){
+            $scope.error = null;
+            $scope.messgae = null;
+            $scope.currentUser = UserService.updateUser(user);
+            if(user){
+                $scope.message = "USer created";
+                UserService.setCurrentUser($scope.currentUser);
+            }
+            else {
+                $scpe.message = "Unable to update";
+            }
+        }
+    }
+})();
+
+/* REGISTER CONTROLLER */
+
+(function(){
+    angular
+        .module("Threads")
+        .controller("RegisterCtrl", RegisterCtrl);
+    function RegisterCtrl($rootScope, $scope, $location, UserService){
+        $scope.register = register;
+        $scope.messgae = null;
+
+        function register(user){
+            $scope.message = null;
+            if(user == null){
+                $scope.message = "Please Fill fields";
+                return;
+            }
+            if(!user.username){
+                $scope.message = "Please provide username";
+                return;
+            }
+            if(!user.password || !user.password2){
+                $scope.message = "Please provide password";
+                return;
+            }
+            if(user.password != user.password2){
+                $scope.message = "passwords should match";
+                return;
+            }
+            var tmpUser;
+            var callback = function(user){
+                tmpUser = user;
+            };
+
+            UserService.findUserByCredentials(user.username, user.password, callback);
+            if(tmpUser != null){
+                $scope.message = "User exists";
+            }
+            else {
+                UserService.createUser($scope.user, callback);
+                UserService.setCurrentUser(tmpUser);
+                $location.url("/profile");
+            }
+
+        }
+    }
+})();
+
 
 /* SEARCH REDDIT API */
 

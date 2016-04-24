@@ -29,6 +29,7 @@
     <script src="../js/user.service.js"></script>
     <script src="../css/news.css"></script>
     <script src="../css/style.css"></script>
+    <script src="../js/authent.js"></script>
 
 
 
@@ -56,7 +57,7 @@
                 <li ng-show ="isLoggedIn()"><a>{{currentUser() }}</a></li>
                 <!--<li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li> -->
                 <li><a href="#/login">Log In</a></li>
-                <li ng-hide="isLoggedIn()"><a href="../views/index.view.html?#/register">Register</a></li>
+                <li><a href="#/register">Register</a></li>
             </ul>
         </div>
     </div>
@@ -182,37 +183,34 @@
     </form>
 </script>
 
-<!-- REGISTER Template
+<!--REGISTER Template  -->
 
 <script type="text/ng-template" id="/register.html">
     <div class="container-fluid page-header">
         <h1>Threader News</h1>
     </div>
 
-    <div ng-show="error" class="alert alert-danger row">
-        <span>{{ error.message }}</span>
-    </div>
 
-    <form ng-submit="register()"
+    <form
           style="margin-top:30px;">
         <h3>Register</h3>
 
         <div class="form-group">
-            <input type="text"
-                   class="form-control"
-                   placeholder="Username"
-                   ng-model="user.username">
+            <label for="username" class="col-sm-2 control-label">Username</label>
+            <input type="text" class="form-control" name="Username" id="usernamer" placeholder="Username" ng-model="user.username">
         </div>
         <div class="form-group">
-            <input type="password"
-                   class="form-control"
-                   placeholder="Password"
-                   ng-model="user.password">
+            <label for="password" class="col-sm-2 control-label">Password</label>
+            <input type="password" name="password" id="passwordr" class="form-control" placeholder="Password" ng-model="user.password">
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <div class="form-group">
+            <label for="verifypassword" class="col-sm-2 control-label">Password</label>
+            <input type="password" name="verifypassword" id="passwordre" class="form-control" placeholder="Re-enter Password" ng-model="user.password2">
+        </div>
+        <button class="btn btn-primary" ng-click="register(user)">Register</button>
     </form>
 </script>
--->
+
 
 <!-- LOGIN TEMPLATE -->
 
@@ -221,11 +219,7 @@
         <h1>Threader News</h1>
     </div>
 
-    <div ng-show="error" class="alert alert-danger row">
-        <span>{{ error.message }}</span>
-    </div>
-
-    <form ng-submit="logIn()"
+    <form
           style="margin-top:30px;">
         <h3>Log In</h3>
 
@@ -241,9 +235,53 @@
                    placeholder="Password"
                    ng-model="user.password">
         </div>
-        <button type="submit" class="btn btn-primary">Log In</button>
+        <button class="btn btn-primary" ng-click="login(user)">Log In</button>
+
     </form>
 </script>
+
+<!--Profile Inline Template -->
+
+<script type="text/ng-template" id="/profile.html">
+    <div class="container-fluid page-header">
+        <h1>Threader News</h1>
+    </div>
+    <form
+            style="margin-top:30px;">
+        <h3>Profile Details</h3>
+    <div class="form-group">
+        <label for ="Username" class="col-sm-2 control-label">Username</label>
+        <div class="col-sm-10"></div>
+        <input type="text" class="form-control" placeholder="Username" name="Username" id="Username" ng-model="currentUser.username">
+    </div>
+    <div class="form-group">
+        <label for ="Password" class="col-sm-2 control-label">Password</label>
+        <input type="password" class="form-control" placeholder="Password" name="password" id="Password" ng-model="currentUser.password">
+    </div>
+        <div class="form-group">
+            <label for ="firstname" class="col-sm-2 control-label">First Name</label>
+            <input type="text" name="firstName" id="firstName"  class="form-control" placeholder="First Name" ng-model="currentUser.firstName">
+        </div>
+
+        <div class="form-group">
+            <label for ="lastname" class="col-sm-2 control-label">Last Name</label>
+            <input type="text" name="lastName" id="lastName"  class="form-control" placeholder="Last Name" ng-model="currentUser.lastName">
+        </div>
+
+    <button class="btn btn-primary" ng-click="updateUser(currentUser)">Update Info</button>
+
+    </form>
+
+
+
+    </script>
+
+
+
+
+
+
+
 
 
 
