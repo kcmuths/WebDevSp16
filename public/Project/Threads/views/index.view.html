@@ -50,12 +50,12 @@
             </button>
             <a class="navbar-brand" href="#">NEWS Browser</a>
         </div>
-        <div class="navbar-collapse collapse">
+        <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/home.html">Home</a></li>
+                <li><a href="#/home">Home</a></li>
                 <li ng-show ="isLoggedIn()"><a>{{currentUser() }}</a></li>
-                <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
-                <li ng-hide="isLoggedIn()"><a href="../views/index.view.html?#/login">Log In</a></li>
+                <!--<li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li> -->
+                <li><a href="#/login">Log In</a></li>
                 <li ng-hide="isLoggedIn()"><a href="../views/index.view.html?#/register">Register</a></li>
             </ul>
         </div>
@@ -214,7 +214,7 @@
 </script>
 -->
 
-<!-- LOGIN TEMPLATE
+<!-- LOGIN TEMPLATE -->
 
 <script type="text/ng-template" id="/login.html">
     <div class="container-fluid page-header">
@@ -245,7 +245,7 @@
     </form>
 </script>
 
--->
+
 
 <!--<script type="text/ng-template" id="/posts.html">
     <div class="page-header">
