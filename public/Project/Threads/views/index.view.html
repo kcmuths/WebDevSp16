@@ -21,7 +21,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-route.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/2.0.0-beta.15/Rx.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.js"></script>
@@ -40,7 +39,7 @@
 </head>
 <body ng-app="Threads" background ="../img/Retro.jpg">
 
-<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="NavCtrl">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -116,14 +115,14 @@
 
         </span>
     <span>
-        <a href="#/posts/{{post._id}}">Comments</a>
+        <a href="#/posts/{{$index}}">Comments</a>
     </span>
-        <span ng-show="post.author">
+        <!--<span ng-show="post.author">
             posted by <a>{{post.author}}</a> |
-        </span>
+        </span>  -->
 
 </div>
-<form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top:30px;">
+<form ng-submit="addPost()" style="margin-top:30px;">
     <h3 style="color: forestgreen; text-align: center; font-size: 40px">Create new NEWS posting!</h3>
     <div class="form-group">
     <input type="text" class="form-control" placeholder="Title" ng-model="title">
@@ -183,7 +182,7 @@
     </form>
 </script>
 
-<!-- REGISTER Template  -->
+<!-- REGISTER Template
 
 <script type="text/ng-template" id="/register.html">
     <div class="container-fluid page-header">
@@ -213,8 +212,9 @@
         <button type="submit" class="btn btn-primary">Register</button>
     </form>
 </script>
+-->
 
-<!-- LOGIN TEMPLATE -->
+<!-- LOGIN TEMPLATE
 
 <script type="text/ng-template" id="/login.html">
     <div class="container-fluid page-header">
@@ -245,7 +245,7 @@
     </form>
 </script>
 
-
+-->
 
 <!--<script type="text/ng-template" id="/posts.html">
     <div class="page-header">

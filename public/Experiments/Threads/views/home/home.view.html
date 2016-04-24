@@ -1,4 +1,6 @@
-<div class="container" ng-include="header.view.html"></div>
+<script src="searcher.js"></script>
+<div class="container" ng-controller="HomeController"  ng-include="header.view.html"></div>
+<div class="container">
 <div class=" container-fluid page-header">
 
     <h1 style="color: darkred; font-size: 80px; text-align: center ">Threader News</h1>
@@ -43,6 +45,7 @@
     <form id="domainform" name="domainform">
         <input type="text" class="search" id="s" name="s" placeholder="ex: cnn.com">
     </form>
+</div>
 </div>
 <div id="content">
 

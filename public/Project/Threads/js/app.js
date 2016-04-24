@@ -1,4 +1,55 @@
 var app = angular.module('Threads', ['ui.router']);
+app.factory('posts',[ function(){
+    var o = {
+        posts:[]
+    };
+    return o;
+
+}]);
+
+
+
+
+
+app.controller('MainCtrl',['$scope','posts', function($scope, posts){
+    //$scope.test= 'Hello World'
+    $scope.posts = posts.posts;
+    //$scope.isLoggedIn = auth.isLoggedIn;
+
+    //$scope.title = '';
+    /*[
+     {title: 'post 1', upvotes: 5},
+     {title: 'post 2', upvotes: 2},
+     {title: 'post 3', upvotes: 15},
+     {title: 'post 4', upvotes: 9},
+     {title: 'post 5', upvotes: 4}
+     ]; */
+
+    /* add POST controller */
+    $scope.addPost = function(){
+        if(!$scope.title || $scope.title === '')
+        {
+            return;
+        }
+        /*  posts.create({
+         title:$scope.title,
+         link:$scope.link,
+         });
+
+         */
+        $scope.posts.push({title: $scope.title, link:$scope.link, upvotes: 0,
+            comments: [
+                {author:'Grace Slick', body:'Thats a Great Post!!', upvotes: 0},
+                {author:'John Bonham', body:'Awesome Stuff', upvotes: 0}
+            ]});
+        $scope.title = '';
+        $scope.link = '';
+    };
+    $scope.incrementUpvotes = function(post) {
+        post.upvotes += 1;
+    };
+}]);
+
 
 app.config([
     '$stateProvider',
@@ -15,7 +66,7 @@ app.config([
                 } */
             })
             .state('posts', {
-            url: '/posts/:id',
+            url: '/posts/{id}',
             templateUrl:'/posts.html',
             controller: 'PostsCtrl'
                /*resolve: {
@@ -28,8 +79,8 @@ app.config([
             url: '/search',
             templateUrl: '/search.html',
             controller: 'SearchCtrl'
-        })
-            .state('login', {
+        });
+          /*  .state('login', {
                 url: '/login',
                 templateUrl: '/login.view.html',
                 controller: 'AuthCtrl',
@@ -48,13 +99,14 @@ app.config([
                         $state.go('home');
                     }
                 }]
-            });
+            }); */
 
 
         $urlRouterProvider.otherwise('home');
     }
 ]);
 
+/*
 app.factory('auth', ['$http', '$window',
     function($http, $window){
         var auth = {};
@@ -90,13 +142,10 @@ app.factory('auth', ['$http', '$window',
     }]);
 
 
-app.factory('/api/Project/Threads/posts',['$http','auth',
-    function($http, auth){
-    var o = {
-        posts:[]
-    };
+*/
 
-    /* Retrieve All posts */
+
+    /* Retrieve All posts
 
     o.getAll = function(){
         return $http.get('/api/Project/Threads/posts').success(function(data){
@@ -104,7 +153,9 @@ app.factory('/api/Project/Threads/posts',['$http','auth',
         });
     };
 
-    /* Creating New Posts */
+    */
+
+    /* Creating New Posts
     o.create = function(post){
         return $http.post('/api/Project/Threads/posts', post, {
         headers: {Authorization: 'Bearer ' +auth.getToken()}
@@ -113,8 +164,8 @@ app.factory('/api/Project/Threads/posts',['$http','auth',
             o.posts.push(data);
         });
     };
-
-    /* Main Page upvotes */
+*/
+    /* Main Page upvotes
     o.upvote = function(post){
         return $http.put('/api/Project/Threads/posts/' + post._id + '/upvote', null,{
             headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -122,22 +173,26 @@ app.factory('/api/Project/Threads/posts',['$http','auth',
             .success(function(data){
                 post.upvotes +=1;
             });
-    };
+    }; */
 
-    /*Retrieve Single post from server */
+    /*Retrieve Single post from server
     o.get = function(id){
         return $http.get('/api/Project/Threads/posts/' + id).then(function(res){
             return res.data;
         });
     };
 
-    /* Enable adding comments */
+
+*/
+    /* Enable adding comments
     o.addComment = function(id, comment){
         return $http.post('/api/Project/Threads/posts' + id + '/comments', comment, {
             headers: {Authorization: 'Bearer ' +auth.getToken()}
         });
     };
 
+    */
+/*
     o.upvoteComment = function(post, comment){
         return $http.put('/api/Project/Threads/posts/' + post._id + '/comments/' + comment._id + '/upvote', null,{
             headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -146,61 +201,23 @@ app.factory('/api/Project/Threads/posts',['$http','auth',
                 comment.upvotes +=1;
             });
     };
-    return o;
-
-}]);
+    */
 
 
-app.controller('MainCtrl',['$scope','posts','auth',
-    function($scope, posts, auth){
-    //$scope.test= 'Hello World'
-        $scope.posts = posts.posts;
-        $scope.isLoggedIn = auth.isLoggedIn;
-
-        $scope.title = '';
-    /*[
-     {title: 'post 1', upvotes: 5},
-     {title: 'post 2', upvotes: 2},
-     {title: 'post 3', upvotes: 15},
-     {title: 'post 4', upvotes: 9},
-     {title: 'post 5', upvotes: 4}
-     ]; */
-    /* add POST controller */
-        $scope.addPost = function(){
-        if($scope.title === '')
-        {
-            return;
-        }
-        posts.create({
-            title:$scope.title,
-            link:$scope.link,
-        });
-        // $scope.posts.push({title: $scope.title, link:$scope.link, upvotes: 0,
-        // comments: [
-        //   {author:'Grace', body:'Slick', upvotes: 0},
-        // {author:'Alice', body:'so and so', upvotes: 0}
-        //]});
-        $scope.title = '';
-        $scope.link = '';
-    };
-    $scope.incrementUpvotes = function(post) {
-        post.upvote(post);
-    };
-}]);
 
 
 /* POST controller */
-app.controller('PostsCtrl', ['$scope', 'posts','post','auth',
-    function($scope, posts, post, auth){
+app.controller('PostsCtrl', ['$scope', '$stateParams','posts', function($scope, $stateParams, posts){
 
-        $scope.post = post;
-        $scope.isLoggedIn = auth.isLoggedIn;
+        $scope.post = posts.posts[$stateParams.id];
+        //$scope.isLoggedIn = auth.isLoggedIn;
 
         $scope.addComment = function(){
         if($scope.body === ''){
             return;
         }
-        posts.addComment(post._id, {
+        /*
+            posts.addComment(post._id, {
             body: $scope.body,
             author: 'user'
         })
@@ -208,18 +225,19 @@ app.controller('PostsCtrl', ['$scope', 'posts','post','auth',
             $scope.post.comments.push(comment);
         });
         $scope.body = '';
+*/
 
 
 
 
-
-        /*$scope.post.comments.push({
+        $scope.post.comments.push({
             body: $scope.body,
             author: 'user',
             upvotes: 0
         });
-        $scope.body = '';  */
+        $scope.body = '';
     };
+
     $scope.incrementUpvotes = function(comment){
         posts.upvoteComment(post, comment);
     };
@@ -227,7 +245,7 @@ app.controller('PostsCtrl', ['$scope', 'posts','post','auth',
     }]);
 
 
-/* Controller for LOGIN and Register Page */
+/* Controller for LOGIN and Register Page
 
 app.controller('AuthCtrl', ['$scope', '$state', 'auth',
     function($scope, $state, auth){
@@ -249,8 +267,8 @@ app.controller('AuthCtrl', ['$scope', '$state', 'auth',
             });
         };
     }]);
-
-/* NAVIGATION/HEADER Controller */
+/
+/* NAVIGATION/HEADER Controller
 
 app.controller('NavCtrl', ['$scope', 'auth',
     function($scope, auth){
@@ -259,7 +277,7 @@ app.controller('NavCtrl', ['$scope', 'auth',
         $scope.logOut = auth.logOut;
     }]);
 
-
+/
 
 /* SEARCH REDDIT API */
 

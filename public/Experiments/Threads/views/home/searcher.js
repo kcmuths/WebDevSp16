@@ -1,13 +1,14 @@
 $(function(){
-    $('#domainform').on('submit', function(event){
+    //event handler
+    $('domainform').on('submit', function(event){
         event.preventDefault();
-
-        var domain = $('#s').val();
+        $('content').html('<img src="../img/default.gif" alt="loading...">');
+        var domain = ('s').val();
         var newdomain = domain.replace(/\//g, ''); //getting rid of slashes
         var requrl = "http://www.reddit.com/domain/";
         var fullurl = requrl + domain + ".json";
 
-        $.getJSON(fullurl, function(json){
+        $.getJSON(fullurl, function(json){  //GEtting the JSON file url by removing slash
             var listing = json.data.children;
             var html = '<ul class="linklist">\n';
 
@@ -38,7 +39,7 @@ $(function(){
     function htmlOutput(html){
         html += '</ul>';
 
-        $('#content').html(html);
+        $('content').html(html);
     }
     $('#res').click(function(){
         $("#s").attr({
@@ -47,6 +48,8 @@ $(function(){
         });
         $("#content").replaceWith('<div id="content"></div>');
     });
+
+
 
     //timeago references timeSince. Used to display imestamp in the format xx minutes ago.
 

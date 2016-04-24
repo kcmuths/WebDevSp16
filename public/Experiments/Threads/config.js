@@ -21,7 +21,8 @@
                 templateUrl:"./views/profile/profile.view.html"
             })
             .when("/home",{
-                templateUrl:"./views/home/home.view.html"
+                templateUrl:"./views/home/home.view.html",
+                controller:"HomeController"
             })
             .otherwise({
                 redirectTo:"#/home"

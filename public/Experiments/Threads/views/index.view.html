@@ -38,7 +38,7 @@
 </head>
 <body ng-app="Threads" background ="../img/Retro.jpg">
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<!--<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -52,20 +52,21 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="./home/home.view.html">Home</a></li>
-                <li><a href="login/login.view.html">login</a></li>
+                <li><a href="#/login">login</a></li>
                 <li><a href="#/register">Create Account</a></li>
                 <li><a href="#/posts.html">Post</a></li>
             </ul>
         </div>
     </div>
-</nav>
-/Threads/views/home/home.view.html
+</nav> -->
+
 
 
 <div class="container-fluid">
     <div class="row">
     <div class="col-md-6 col-md-offset-3">
         <ui-view></ui-view>
+        <div class="container" ng-include="header/header.view.html"></div>
     </div>
         <div style="top: 25%;
     left:75%;
