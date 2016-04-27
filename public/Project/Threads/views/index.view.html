@@ -34,6 +34,8 @@
 
 
     <script src="../views/login/login.controller.js"></script>
+    <script src="../views/register/register.controller.js"></script>
+    <script src="../views/profile/profile.controller.js"></script>
 
     <style> .glyphicon-thumbs-up {cursor:pointer} </style>
 
@@ -268,7 +270,7 @@
             <input type="text" name="lastName" id="lastName"  class="form-control" placeholder="Last Name" ng-model="currentUser.lastName">
         </div>
 
-    <button class="btn btn-primary" ng-click="updateUser(currentUser)">Update Info</button>
+    <button class="btn btn-primary" ng-click="update(user)">Update Info</button>
 
     </form>
 

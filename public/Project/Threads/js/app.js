@@ -90,7 +90,7 @@ app.config([
             .state('register', {
                 url: '/register',
                templateUrl: '/register.html',
-           //     controller: 'AuthCtrl',
+                controller: 'RegisterCtrl'
 
             });
 
@@ -325,52 +325,6 @@ app.controller('NavCtrl', ['$scope', 'auth',
     }
 })();
 
-/* REGISTER CONTROLLER */
-
-(function(){
-    angular
-        .module("Threads")
-        .controller("RegisterCtrl", RegisterCtrl);
-    function RegisterCtrl($rootScope, $scope, $location, UserService){
-        $scope.register = register;
-        $scope.messgae = null;
-
-        function register(user){
-            $scope.message = null;
-            if(user == null){
-                $scope.message = "Please Fill fields";
-                return;
-            }
-            if(!user.username){
-                $scope.message = "Please provide username";
-                return;
-            }
-            if(!user.password || !user.password2){
-                $scope.message = "Please provide password";
-                return;
-            }
-            if(user.password != user.password2){
-                $scope.message = "passwords should match";
-                return;
-            }
-            var tmpUser;
-            var callback = function(user){
-                tmpUser = user;
-            };
-
-            UserService.findUserByCredentials(user.username, user.password, callback);
-            if(tmpUser != null){
-                $scope.message = "User exists";
-            }
-            else {
-                UserService.createUser($scope.user, callback);
-                UserService.setCurrentUser(tmpUser);
-                $location.url("/profile");
-            }
-
-        }
-    }
-})();
 
 
 /* SEARCH REDDIT API */
